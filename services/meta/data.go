@@ -22,7 +22,7 @@ const (
 	DefaultRetentionPolicyReplicaN = 1
 
 	// DefaultRetentionPolicyDuration is the default value of RetentionPolicyInfo.Duration.
-	DefaultRetentionPolicyDuration = 7 * (24 * time.Hour)
+	DefaultRetentionPolicyDuration = time.Duration(0)
 
 	// DefaultRetentionPolicyName is the default name for auto generated retention policies.
 	DefaultRetentionPolicyName = "autogen"
@@ -856,6 +856,9 @@ type RetentionPolicyInfo struct {
 
 // NewRetentionPolicyInfo returns a new instance of RetentionPolicyInfo with defaults set.
 func NewRetentionPolicyInfo(name string) *RetentionPolicyInfo {
+	if name == "" {
+		name = DefaultRetentionPolicyName
+	}
 	return &RetentionPolicyInfo{
 		Name:     name,
 		ReplicaN: DefaultRetentionPolicyReplicaN,

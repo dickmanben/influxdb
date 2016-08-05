@@ -253,8 +253,12 @@ func (e *StatementExecutor) executeCreateDatabaseStatement(stmt *influxql.Create
 	}
 
 	rpi := meta.NewRetentionPolicyInfo(stmt.RetentionPolicyName)
-	rpi.Duration = stmt.RetentionPolicyDuration
-	rpi.ReplicaN = stmt.RetentionPolicyReplication
+	if stmt.RetentionPolicyDuration != nil {
+		rpi.Duration = *stmt.RetentionPolicyDuration
+	}
+	if stmt.RetentionPolicyReplication != nil {
+		rpi.ReplicaN = *stmt.RetentionPolicyReplication
+	}
 	rpi.ShardGroupDuration = stmt.RetentionPolicyShardGroupDuration
 	_, err := e.MetaClient.CreateDatabaseWithRetentionPolicy(stmt.Name, rpi)
 	return err
